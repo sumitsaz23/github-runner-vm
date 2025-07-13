@@ -1,0 +1,30 @@
+name: deploy github runner VM
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Deploy VM
+        run: |
+          echo "Deploying GitHub Runner VM..."
+          # Add your deployment script or command here
+          # For example, using Terraform, Ansible, or any other deployment tool
+          terraform init
+          terraform apply -auto-approve
