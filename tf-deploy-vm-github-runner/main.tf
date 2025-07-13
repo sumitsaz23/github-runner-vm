@@ -16,6 +16,7 @@ module "github_runner_vms" {
   ssh_key     = var.ssh_key
   cipassword  = var.cipassword
   ciuser      = var.ciuser
+  desc        = each.value.desc
   # Optional: override defaults if needed
   # cicustom    = "vendor=local:snippets/qemu-guest-agent.yml"
   # nameserver  = "1.1.1.1 8.8.8.8"

@@ -17,6 +17,7 @@ resource "proxmox_vm_qemu" "this" {
   scsihw      = "virtio-scsi-single"
   vm_state    = var.vm_state
   automatic_reboot = true
+  desc       = var.desc
 
   cicustom   = var.cicustom
   ciupgrade  = true

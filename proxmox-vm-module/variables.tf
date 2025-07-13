@@ -16,3 +16,4 @@ variable "efidisk_storage" { default = "hdd-vm-data" }
 variable "disk_storage" { default = "hdd-vm-data" }
 variable "disk_size" {}
 variable "network_bridge" { default = "vmbr0" }
+variable "desc" { default = "GitHub Runner VM" }
