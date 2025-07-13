@@ -9,6 +9,7 @@ module "github_runner_vms" {
   cpu_cores   = each.value.cpu_cores
   memory      = each.value.memory
   clone       = each.value.clone
+  full_clone =  each.value.full_clone
   vm_state    = each.value.vm_state
   ipconfig0   = each.value.ipconfig0
   disk_size   = each.value.storage
@@ -21,4 +22,9 @@ module "github_runner_vms" {
   # efidisk_storage = "hdd-vm-data"
   # disk_storage    = "hdd-vm-data"
   # network_bridge  = "vmbr0"
+}
+
+output "vm_ips" {
+  description = "All outputs from myvm module"
+  value       = module.github_runner_vms
 }

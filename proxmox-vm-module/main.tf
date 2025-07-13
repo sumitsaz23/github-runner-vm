@@ -13,6 +13,7 @@ resource "proxmox_vm_qemu" "this" {
   bios        = "ovmf"
   boot        = "order=scsi0"
   clone       = var.clone
+  full_clone = var.full_clone
   scsihw      = "virtio-scsi-single"
   vm_state    = var.vm_state
   automatic_reboot = true
@@ -56,4 +57,6 @@ resource "proxmox_vm_qemu" "this" {
     bridge = var.network_bridge
     model  = "virtio"
   }
+  
 }
+

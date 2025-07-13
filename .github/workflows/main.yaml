@@ -21,11 +21,31 @@ jobs:
         with:
           # The version of Terraform CLI to install. Instead of full version string you can also specify constraint string starting with "<" (for example `<1.13.0`) to install the latest version satisfying the constraint. A value of `latest` will install the latest version of Terraform CLI. Defaults to `latest`.
           terraform_version: "1.12.1" # optional, default is latest
+          terraform_wrapper: true # optional, default is false
+
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -check
+        continue-on-error: true
+
+      - name: Terraform Init
+        id: init
+        run: terraform init -input=false
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -no-color -input=false
+        continue-on-error: true    
                 
-      - name: Deploy VM
+      - name: Terraform Apply
+        id: apply
         run: |
           echo "Deploying GitHub Runner VM..."
           # Add your deployment script or command here
-          # For example, using Terraform, Ansible, or any other deployment tool
+          
           terraform init
           terraform apply -auto-approve
