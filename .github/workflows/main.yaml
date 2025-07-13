@@ -4,10 +4,7 @@ on:
 #     branches:
 #       - main
   workflow_dispatch:
-  
-defaults:
-      run:
-        working-directory: ${{ env.tf_actions_working_dir }}
+
 
 jobs:
   deploy:
@@ -38,7 +35,7 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan -no-color -input=false
+        run: terraform plan -out=tfplan -no-color
         continue-on-error: true    
                 
       - name: Terraform Apply
@@ -46,6 +43,11 @@ jobs:
         run: |
           echo "Deploying GitHub Runner VM..."
           # Add your deployment script or command here
+          if [ -f tfplan ]; then
+            echo "Applying Terraform plan..."
+            terraform apply tfplan -auto-approve
+          else
+            echo "No Terraform plan found. Exiting."
+            exit 1
+          fi
           
-          terraform init
-          terraform apply -auto-approve
