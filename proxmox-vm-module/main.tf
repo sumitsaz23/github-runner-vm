@@ -58,6 +58,14 @@ resource "proxmox_vm_qemu" "this" {
     bridge = var.network_bridge
     model  = "virtio"
   }
+
+  provisioner "remote-exec" {
+    inline = [
+      "curl -O https://raw.githubusercontent.com/actions/runner/main/scripts/create-latest-svc.sh",
+      "chmod +x create-latest-svc.sh",
+      "RUNNER_CFG_PAT=${var.RUNNER_CFG_PAT} ./create-latest-svc.sh ${var.desc}"
+    ]
+  }
   
 }
 

@@ -35,3 +35,9 @@ variable "ciuser" {
   description = "Password for the cloud-init user"
   sensitive = true
 }
+
+variable "RUNNER_CFG_PAT" {
+  type = string
+  description = "Password for the cloud-init user"
+  sensitive = true
+}

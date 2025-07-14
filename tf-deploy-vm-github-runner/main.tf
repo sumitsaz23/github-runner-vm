@@ -23,6 +23,7 @@ module "github_runner_vms" {
   # efidisk_storage = "hdd-vm-data"
   # disk_storage    = "hdd-vm-data"
   # network_bridge  = "vmbr0"
+
 }
 
 output "vm_ips" {
