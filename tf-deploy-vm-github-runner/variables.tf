@@ -13,8 +13,8 @@ variable "github_runner_vm_configs" {
     desc        = optional(string)  
   }))
   default = {
-    github-runner-1 = { name = "github-runner-1", cpu_cores = 2, memory = 2048, storage = "20G", clone = "ubuntu-24-04-cloudinit", ipconfig0 = "ip=dhcp,ip6=dhcp", vm_state = "running", desc = "GitHub Runner VM 1" }
-    github-runner-2 = { name = "github-runner-2", cpu_cores = 2, memory = 2048, storage = "20G", clone = "ubuntu-24-04-cloudinit", ipconfig0 = "ip=dhcp,ip6=dhcp", vm_state = "running" }
+    github-runner-1 = { name = "github-runner-1", cpu_cores = 2, memory = 2048, storage = "20G", clone = "ubuntu-24-04-cloudinit", ipconfig0 = "ip=dhcp,ip6=dhcp", vm_state = "running", desc = "sumitsaz23/github-runner-vm" }
+    #github-runner-2 = { name = "github-runner-2", cpu_cores = 2, memory = 2048, storage = "20G", clone = "ubuntu-24-04-cloudinit", ipconfig0 = "ip=dhcp,ip6=dhcp", vm_state = "running" }
     #github-runner-3 = { vmid = 2003, name = "github-runner-3", cpu_cores = 2, memory = 2048, storage = "20G", clone = "ubuntu-24-04-cloudinit", ipconfig0 = "ip=dhcp,ip6=dhcp", vm_state = "running" }
     }
 }
