@@ -58,14 +58,27 @@ resource "proxmox_vm_qemu" "this" {
     bridge = var.network_bridge
     model  = "virtio"
   }
+  
+}
 
+resource "null_resource" "provision_runner" {
+  depends_on = [proxmox_vm_qemu.this]
+
+
+  connection {
+    type        = "ssh"
+    host        = proxmox_vm_qemu.this.ssh_host
+    user        = "gitrunner"
+    private_key = file(var.ssh_private_key_path)
+    port        = 22
+    timeout     = "2m"
+  }
   provisioner "remote-exec" {
     inline = [
       "curl -O https://raw.githubusercontent.com/actions/runner/main/scripts/create-latest-svc.sh",
       "chmod +x create-latest-svc.sh",
-      "RUNNER_CFG_PAT=${var.RUNNER_CFG_PAT} ./create-latest-svc.sh ${var.desc}"
+      "RUNNER_CFG_PAT=${var.RUNNER_CFG_PAT} bash ./create-latest-svc.sh ${var.desc}"
     ]
   }
-  
 }
 

@@ -20,5 +20,11 @@ variable "desc" { default = "GitHub Runner VM" }
 variable "RUNNER_CFG_PAT" {
   type        = string
   description = "GitHub Runner Personal Access Token"
-  sensitive   = true
+  sensitive   = false
+}
+variable "ssh_private_key_path" {
+  type        = string
+  description = "Path to the SSH private key for the VM"
+  default     = "~/.ssh/proxmox-vms-sshkey"
+  
 }
