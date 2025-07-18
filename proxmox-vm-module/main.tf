@@ -84,6 +84,7 @@ resource "null_resource" "provision_runner" {
   provisioner "remote-exec" {
     inline = [
       "curl -O https://raw.githubusercontent.com/actions/runner/main/scripts/create-latest-svc.sh",
+      "if [ ! -f create-latest-svc.sh ]; then echo 'create-latest-svc.sh not found after download'; exit 1; fi",
       "chmod +x create-latest-svc.sh",
       "RUNNER_CFG_PAT=${var.RUNNER_CFG_PAT} bash ./create-latest-svc.sh ${var.desc}"
     ]
