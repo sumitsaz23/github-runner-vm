@@ -3,6 +3,7 @@ resource "proxmox_vm_qemu" "this" {
   name        = var.name
   target_node = var.target_node
   agent       = 1
+  agent_timeout = 120
   cpu {
     cores   = var.cpu_cores
     sockets = 1
@@ -61,8 +62,15 @@ resource "proxmox_vm_qemu" "this" {
   
 }
 
+
+# resource "time_sleep" "wait_for_agent" {
+#   depends_on       = [proxmox_vm_qemu.this]
+#   create_duration  = "1m"          # adjust based on your VM’s startup time
+# }
+
+
 resource "null_resource" "provision_runner" {
-  depends_on = [proxmox_vm_qemu.this]
+  #depends_on = [time_sleep.wait_for_agent]
 
 
   connection {
@@ -81,4 +89,40 @@ resource "null_resource" "provision_runner" {
     ]
   }
 }
+
+
+
+
+resource "null_resource" "destroy_runner" {
+  
+  # Capture remote host and any other needed runtime values
+  triggers = {
+    ssh_host = proxmox_vm_qemu.this.ssh_host
+    cfg_pat  = var.RUNNER_CFG_PAT
+    desc     = var.desc
+    priv_key = file(var.ssh_private_key_path)
+  }
+
+  connection {
+    type        = "ssh"
+    host        = self.triggers.ssh_host
+    user        = "gitrunner"
+    private_key = self.triggers.priv_key
+    port        = 22
+    timeout     = "2m"
+  }
+
+  provisioner "remote-exec" {
+    when    = destroy
+    inline  = [
+      "curl -O https://raw.githubusercontent.com/actions/runner/refs/heads/main/scripts/remove-svc.sh",
+      "if [ ! -f remove-svc.sh ]; then echo 'remove-svc.sh not found after download'; exit 1; fi",
+      "chmod +x remove-svc.sh",
+      "RUNNER_CFG_PAT=${self.triggers.cfg_pat} bash ./remove-svc.sh ${self.triggers.desc}",
+      "echo cleanup completed"
+    ]
+    # omit on_failure if you want failures to block destroy
+  }
+}
+
 
